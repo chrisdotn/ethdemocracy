@@ -6,6 +6,18 @@ import "../contracts/EthDemocracy.sol";
 
 contract TestVoters {
 
+    // addresses from testrpc for mnemonic "yum chocolate"
+    address[10] voters = [0xb731983dE1800A7BC9a760e9889Be73572dE3D36,
+        0x114fc24cC2CaF4F058262452B96021eD36FE10CC,
+        0x0c0D6aa95b11bB47Bc43d9592a768453113712F3,
+        0x43972274180879Af51665864C2c2Cd425a578607,
+        0xDDE8dc7c42C683da38D0be2a62a8AF9a0accc445,
+        0x41832d0da4EbF0d7B9d0Bd280d191455B7320be6,
+        0xa41bcB69236491a1a7c610f9B014bCcf580292C3,
+        0xb2de2D7E06afbE99eb14746CF48c162742126704,
+        0x6e203c5060Ff618Bed470740B1Fc47AF50969F3D,
+        0x4ff202FdbCB19C4be34981110B4c4C10ce9a2a82];
+
     function beforeEach() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
         ethDemocracy.deleteVoters();
@@ -22,7 +34,7 @@ contract TestVoters {
       EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
       uint expectedLength = ethDemocracy.getVotersLength() + 1;
-      Assert.isTrue(ethDemocracy.addVoter(0x7D4D6943CCDB27bC23740c44A560e6B275AB6dfB), 'Voter should have been added');
+      Assert.isTrue(ethDemocracy.addVoter(voters[1]), 'Voter should have been added');
       Assert.equal(ethDemocracy.getVotersLength(), expectedLength, 'Length should have been increased');
   }
 
@@ -30,30 +42,30 @@ contract TestVoters {
       EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
       uint expectedLength = 0;
-      ethDemocracy.addVoter(0x7D4D6943CCDB27bC23740c44A560e6B275AB6dfB);
-      Assert.equal(ethDemocracy.deleteVoters(), expectedLength, 'All voters should have been deleted');
+      ethDemocracy.addVoter(voters[1]);
+      Assert.isTrue(ethDemocracy.deleteVoters(), 'Should have returned true');
+      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, 'Voters should be empty');
   }
 
   function testAddExistingVoter() {
       EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-      ethDemocracy.addVoter(0x7D4D6943CCDB27bC23740c44A560e6B275AB6dfB);
+      ethDemocracy.addVoter(voters[1]);
 
       uint expectedLength = ethDemocracy.getVotersLength();
-      Assert.isFalse(ethDemocracy.addVoter(0x7D4D6943CCDB27bC23740c44A560e6B275AB6dfB), 'Voter should not have been added');
+      Assert.isFalse(ethDemocracy.addVoter(voters[1]), 'Voter should not have been added');
       Assert.equal(ethDemocracy.getVotersLength(), expectedLength, 'Length should have stayed the same');
   }
 
   function testAddVoters() {
       EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-      ethDemocracy.addVoter(0x7D4D6943CCDB27bC23740c44A560e6B275AB6dfB);
-      ethDemocracy.addVoter(0xd36D9029f20A288dB9e97E6A1f95b7E0B0B2FD82);
-      ethDemocracy.addVoter(0x9B9344069E466E13b17732dd00cE576cee5726Af);
+      ethDemocracy.addVoter(voters[1]);
+      ethDemocracy.addVoter(voters[2]);
+      ethDemocracy.addVoter(voters[3]);
 
       uint expected = 3;
       Assert.equal(ethDemocracy.getVotersLength(), expected, 'There should be 3 registered voters');
   }
-
 
 }

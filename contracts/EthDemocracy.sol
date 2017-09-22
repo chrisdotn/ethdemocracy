@@ -18,8 +18,8 @@ contract EthDemocracy {
     event VoteCast(address _voter, uint _electionId, string _choice);
     event VoteTransferred(address _from, address _to, uint _amount);
 
-    Election[] elections;
-    address[] voters;
+    Election[] public elections;
+    address[] public voters;
 
     /**
      * Return the number of registered voters
@@ -35,6 +35,26 @@ contract EthDemocracy {
         return elections.length;
     }
 
+    function getElection(uint _id) constant returns (uint id, string name) {
+        return(elections[_id].id, elections[_id].name);
+    }
+
+    function getElectionId(string _electionName) constant returns (uint) {
+        for (uint i=0; i<elections.length; i++) {
+            if (sha3(_electionName) == sha3(elections[i].name)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Get the name of an election
+     */
+    function getElectionName(uint _electionId) constant returns (string) {
+        return elections[_electionId].name;
+    }
+
     /**
      * Test if an address is a registered voter
      */
@@ -45,6 +65,10 @@ contract EthDemocracy {
             }
         }
         return false;
+    }
+
+    function getVoteOption(uint _electionId, uint _optionId) constant returns (string) {
+        return elections[_electionId].options[_optionId];
     }
 
     /**

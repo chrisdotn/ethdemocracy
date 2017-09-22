@@ -6,10 +6,10 @@ import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
+import ethDemocracy_artifacts from '../../build/contracts/EthDemocracy.json'
 
-// MetaCoin is our usable abstraction, which we'll use through the code below.
-var MetaCoin = contract(metacoin_artifacts);
+// EthDemocracy is our usable abstraction, which we'll use through the code below.
+var EthDemocracy = contract(ethDemocracy_artifacts);
 
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
@@ -17,12 +17,29 @@ var MetaCoin = contract(metacoin_artifacts);
 var accounts;
 var account;
 
+function populateSelectElement (element, array) {
+  var newElement,
+      i;
+
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+
+  for(i = 0; i < array.length; i += 1) {
+      newElement = document.createElement('option');
+      newElement.textContent = optionArray[i];
+      newElement.setAttribute('value', optionArray[i]);
+      element.appendChild(newElement);
+  }
+};
+
 window.App = {
+
   start: function() {
     var self = this;
 
-    // Bootstrap the MetaCoin abstraction for Use.
-    MetaCoin.setProvider(web3.currentProvider);
+    // Bootstrap the EthDemocracy abstraction for Use.
+    EthDemocracy.setProvider(web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function(err, accs) {
@@ -39,7 +56,7 @@ window.App = {
       accounts = accs;
       account = accounts[0];
 
-      self.refreshBalance();
+      self.refresh();
     });
   },
 
@@ -48,52 +65,120 @@ window.App = {
     status.innerHTML = message;
   },
 
-  refreshBalance: function() {
-    var self = this;
+  refresh: function() {
+    let self = this;
 
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.getBalance.call(account, {from: account});
-    }).then(function(value) {
-      var balance_element = document.getElementById("balance");
-      balance_element.innerHTML = value.valueOf();
-    }).catch(function(e) {
-      console.log(e);
-      self.setStatus("Error getting balance; see log.");
-    });
+    let value = web3.fromWei(web3.eth.getBalance(account), 'ether')
+    let balance_element = document.getElementById("balance");
+    balance_element.innerHTML = value.valueOf();
   },
 
-  sendCoin: function() {
-    var self = this;
+  addVoter: function() {
+      var self = this;
 
-    var amount = parseInt(document.getElementById("amount").value);
-    var receiver = document.getElementById("receiver").value;
+      var voter = document.getElementById('voter').value;
+      this.setStatus("Initiating transaction... (please wait)");
 
-    this.setStatus("Initiating transaction... (please wait)");
+      var ethd;
+      EthDemocracy.deployed().then(function(instance) {
+        ethd = instance;
+        return ethd.addVoter(voter, {from: account});
+      }).then(function() {
+        self.setStatus("Transaction complete!");
+        self.refresh();
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error adding voter; see log.");
+      });
+  },
 
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.sendCoin(receiver, amount, {from: account});
-    }).then(function() {
-      self.setStatus("Transaction complete!");
-      self.refreshBalance();
-    }).catch(function(e) {
-      console.log(e);
-      self.setStatus("Error sending coin; see log.");
-    });
+  deleteVoters: function() {
+      var self = this;
+      this.setStatus("Initiating transaction... (please wait)");
+
+      var ethd;
+      EthDemocracy.deployed().then(function(instance) {
+        ethd = instance;
+        return ethd.deleteVoters({from: account});
+      }).then(function() {
+        self.setStatus("Transaction complete!");
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error adding voter; see log.");
+      });
+  },
+
+  createElection: function() {
+      let self = this;
+
+      let electionName = document.getElementById('electionName').value;
+      this.setStatus("Initiating transaction... (please wait)");
+
+      var ethd;
+      EthDemocracy.deployed().then(function(instance) {
+        ethd = instance;
+        return ethd.createElection(electionName, {from: account});
+      }).then(function() {
+        self.setStatus("Transaction complete!");
+        self.refresh();
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error adding voter; see log.");
+      });
+  },
+
+  addVoteOption: function() {
+      let self = this;
+
+      let electionName = document.getElementById('electionNameOption');
+      let optionName = document.getElementById('optionName');
+
+      this.setStatus("Initiating transaction... (please wait)");
+
+      var ethd;
+      EthDemocracy.deployed().then(function(instance) {
+        ethd = instance;
+        return ethd.addVoteOption(electionName, optionName, {from: account});
+      }).then(function() {
+        self.setStatus("Transaction complete!");
+        self.refresh();
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error adding vote option; see log.");
+      });
+
   }
+
+  // sendCoin: function() {
+  //   var self = this;
+  //
+  //   var amount = parseInt(document.getElementById("amount").value);
+  //   var receiver = document.getElementById("receiver").value;
+  //
+  //   this.setStatus("Initiating transaction... (please wait)");
+  //
+  //   var ethd;
+  //   EthDemocracy.deployed().then(function(instance) {
+  //     ethd = instance;
+  //     return ethd.sendCoin(receiver, amount, {from: account});
+  //   }).then(function() {
+  //     self.setStatus("Transaction complete!");
+  //     self.refresh();
+  //   }).catch(function(e) {
+  //     console.log(e);
+  //     self.setStatus("Error sending coin; see log.");
+  //   });
+  // }
 };
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
   if (typeof web3 !== 'undefined') {
-    console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 MetaCoin, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask")
+    console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 EthDemocracy, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-ethdmask")
     // Use Mist/MetaMask's provider
     window.web3 = new Web3(web3.currentProvider);
   } else {
-    console.warn("No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
+    console.warn("No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-ethdmask");
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
     window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
   }

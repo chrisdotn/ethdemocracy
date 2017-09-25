@@ -6,14 +6,14 @@
     "lint": "eslint ./",
     "build": "webpack",
     "dev": "webpack-dev-server",
-    "test": "docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' && truffle test",
+    "test": "docker run -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' && truffle test",
     "posttest": "docker stop testrpc"
   },
-  "author": "Douglas von Kohorn",
+  "author": "Christoph Niemann",
   "license": "MIT",
   "dependencies": {
     "truffle": "^3.4.9",
-    "web3": "^0.18.2"
+    "web3": "^0.18.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -36,7 +36,6 @@
     "json-loader": "^0.5.7",
     "style-loader": "^0.13.2",
     "truffle-contract": "^1.1.11",
-    "web3": "^0.18.4",
     "webpack": "^2.7.0",
     "webpack-dev-server": "^2.8.2"
   }

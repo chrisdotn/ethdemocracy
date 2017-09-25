@@ -17,6 +17,12 @@ div {
     display: flex;
 }
 
+.field {
+    border: none;
+    margin: 0;
+    padding: 0 0 1em 0;
+}
+
 section {
     border: 1px dashed blue;
     padding: 1em;

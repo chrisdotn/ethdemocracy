@@ -18,7 +18,7 @@
             <h2>Voter Handling</h2>
 
             <h3>Add Voter</h3>
-            <div class="form">
+            <div class="field">
                 <label for="voter">Address</label>
                 <input type="text" id="voter" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
             </div>
@@ -31,15 +31,21 @@
         <section>
             <h2>Election Handling</h2>
             <h3>Create Election</h3>
-            <label for="electionName">Name</label>
-            <input type="text" id="electionName" placeholder="Short Name"></input>
+            <div class="field">
+                <label for="electionName">Name</label>
+                <input type="text" id="electionName" placeholder="Short Name"></input>
+            </div>
             <button id='createElection'>Create Election</button>
 
             <h3>Add Option</h3>
-            <label for="electionIdOption">Election</label>
-            <input type="text" id="electionIdOption" placeholder="e.g. 1"></input>
-            <label for="optionName">Option</label>
-            <input type="text" id="optionName" placeholder="e.g. yellow, red"></input>
+            <div class="field">
+                <label for="electionIdOption">Election</label>
+                <input type="text" id="electionIdOption" placeholder="e.g. 1"></input>
+            </div>
+            <div class="field">
+                <label for="optionName">Option</label>
+                <input type="text" id="optionName" placeholder="e.g. yellow, red"></input>
+            </div>
             <button id='addVoteOption'>Add Option</button>
         </section>
 
@@ -47,18 +53,22 @@
             <h2>Vote Handling</h2>
 
             <h3>Vote</h3>
-            <label for="electionIdVote">Election</label>
-            <input type="text" id="electionIdVote" placeholder="e.g. 1"></input>
-            <label for="optionNameVote">Option</label>
-            <input type="text" id="optionNameVote" placeholder="e.g. yellow, red"></input>
+            <div class="field">
+                <label for="electionIdVote">Election</label>
+                <input type="text" id="electionIdVote" placeholder="e.g. 1"></input>
+            </div>
+            <div class="field">
+                <label for="optionNameVote">Option</label>
+                <input type="text" id="optionNameVote" placeholder="e.g. yellow, red"></input>
+            </div>
             <button id='vote'>Vote</button>
 
             <h3>Transfer Votes</h3>
-            <div class="form">
+            <div class="field">
                 <label for="voteTransferAddress">Address</label>
                 <input type="text" id="voteTransferAddress" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
             </div>
-            <div class="form">
+            <div class="field">
                 <label for="voteTransferElectionId">Election Id</label>
                 <input type="text" id="voteTransferElectionId" placeholder="e.g., 1"></input>
             </div>

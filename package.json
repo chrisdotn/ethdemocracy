@@ -32,6 +32,8 @@
         "eslint-plugin-standard": "^2.3.1",
         "html-webpack-plugin": "^2.30.1",
         "json-loader": "^0.5.7",
+        "mocha": "^3.5.3",
+        "mocha-junit-reporter": "^1.13.0",
         "style-loader": "^0.13.2",
         "truffle-contract": "^1.1.11",
         "webpack": "^2.7.0",

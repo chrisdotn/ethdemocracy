@@ -8,6 +8,9 @@ EthDemocracy.deployed().then(function(instance) {
 var ethd;
 EthDemocracy.deployed().then(function(instance) { ethd = instance; });
 
+ethd.addVoter(0x617a638B22c1F9FDE234C148289Cf8516c9F47FF).then(function(result) { console.log(result); }).catch(function(e) { console.error(e);});
+ethd.getVotersLength().then(function(res) { console.log(res.valueOf(); });
+
 ethd.createElection('Test1', {gas: 1000000}).then(function (result) { console.log(result); }).catch(function (e) { console.error(e); });
 ethd.getElectionsLength().then(function (result) { console.log(result.valueOf()); }).catch(function (e) { console.error(e); });
 ethd.getElection(0).then(function (result) { console.log(result[1]); })

@@ -1,8 +1,27 @@
 body {
+  /*
   margin-left: 25%;
   margin-right: 25%;
   margin-top: 10%;
+  */
   font-family: "Open Sans", sans-serif;
+}
+
+div {
+    border: 1px solid black;
+    padding: 1em;
+    margin: 1em;
+}
+
+.controls {
+    display: flex;
+}
+
+section {
+    border: 1px dashed blue;
+    padding: 1em;
+    margin: 1em;
+    flex: 1 1 auto;
 }
 
 label {
@@ -11,7 +30,7 @@ label {
 }
 
 input {
-  width: 500px;
+  /* width: 500px; */
   padding: 5px;
   font-size: 16px;
 }
@@ -23,7 +42,7 @@ button {
 
 h1, h2 {
   /* display: inline-block; */
-  vertical-align: middle;
+  /* vertical-align: middle;*/
   margin-top: 0px;
   margin-bottom: 10px;
 }

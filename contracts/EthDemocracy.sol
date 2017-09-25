@@ -71,6 +71,18 @@ contract EthDemocracy {
         return elections[_electionId].options[_optionId];
     }
 
+    function getVoteOptionId(uint _electionId, string _option) constant returns (uint) {
+        require(_electionId < elections.length);
+        var hash = sha3(_option);
+        for (uint i=0; i<elections[_electionId].options.length; i++) {
+            if (hash == sha3(elections[_electionId].options[i])) {
+                return i;
+            }
+        }
+        revert();
+        //revert('Not a valid option');
+    }
+
     /**
      * Get number of choices for a given election
      */
@@ -147,9 +159,14 @@ contract EthDemocracy {
     /**
      * Vote with all available tokens for a choice
      */
-    function castVote(uint _electionId, string _choice) returns (bool) {
+    function castVote(uint _electionId, uint _optionId) returns (bool) {
         if (_electionId >= elections.length) {
             Error('Errornous election ID');
+            return false;
+        }
+
+        if (_optionId >= elections[_electionId].options.length) {
+            Error('Errornous option ID');
             return false;
         }
 
@@ -159,7 +176,7 @@ contract EthDemocracy {
             return false;
         }
 
-        bool validChoice = false;
+        /*bool validChoice = false;
         bytes32 sha3Choice = sha3(_choice);
         for (uint i=0; i<elections[_electionId].options.length; i++) {
             if (sha3(elections[_electionId].options[i]) == sha3Choice) {
@@ -170,12 +187,13 @@ contract EthDemocracy {
         if (!validChoice) {
             Error('Invalid choice');
             return false;
-        }
+        }*/
 
         uint voteWeight = elections[_electionId].balance[msg.sender];
+        string memory choice = elections[_electionId].options[_optionId];
         elections[_electionId].balance[msg.sender] = 0;
-        elections[_electionId].votes[_choice] += voteWeight;
-        VoteCast(msg.sender, _electionId, _choice);
+        elections[_electionId].votes[choice] += voteWeight;
+        VoteCast(msg.sender, _electionId, choice);
 
         return true;
     }
@@ -183,20 +201,15 @@ contract EthDemocracy {
     /**
      * Transfer your votes to another address. The address must be a registered voter
      */
-    function transferVotes(uint _electionId, uint _amount, address _to) returns (bool) {
-        if (getVotes(_electionId, msg.sender) < _amount) {
-            Error('Not enough votes left');
-            return false;
-        }
+    function transferVotes(uint _electionId, address _to) returns (bool) {
+        require(_electionId < elections.length);
+        require(isVoter(_to));
 
-        if (!isVoter(_to)) {
-            Error('Receiver is not a voter');
-            return false;
-        }
+        var amount = getVotes(_electionId, msg.sender);
 
-        elections[_electionId].balance[msg.sender] -= _amount;
-        elections[_electionId].balance[_to] += _amount;
-        VoteTransferred(msg.sender, _to, _amount);
+        elections[_electionId].balance[msg.sender] -= amount;
+        elections[_electionId].balance[_to] += amount;
+        VoteTransferred(msg.sender, _to, amount);
         return true;
     }
 

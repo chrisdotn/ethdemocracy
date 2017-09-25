@@ -56,6 +56,54 @@ window.App = {
       accounts = accs;
       account = accounts[0];
 
+      $('#addVoter').on('click', () => {
+          let address = $('#voter').val();
+          self.addVoter(address);
+      });
+
+      $('#deleteVoters').on('click', () => {
+          self.deleteVoters();
+      });
+
+      $('#createElection').on('click', () => {
+          let electionName = document.getElementById('electionName').value;
+          self.createElection(electionName);
+      });
+
+      $('#addVoteOption').on('click', () => {
+          let electionId = $('#electionIdOption').val();
+          let optionName = $('#optionName').val();
+          self.addVoteOption(electionId, optionName);
+      });
+
+      $('#vote').on('click', () => {
+          let electionId = $('#electionIdVote').val();
+          let optionName = $('#optionNameVote').val();
+
+          self.setStatus("Initiating transaction... (please wait)");
+
+          var ethd;
+          EthDemocracy.deployed().then(function(instance) {
+            ethd = instance;
+            return ethd.getVoteOptionId(electionId, optionName, {from: account});
+        }).then(function(optionId) {
+            console.log('OptionID: ' + optionId);
+            return ethd.castVote(electionId, optionId, {from: account});
+        }).then(function() {
+            self.setStatus("Transaction complete!");
+            self.refresh();
+          }).catch(function(e) {
+            console.log(e);
+            self.setStatus("Error adding voter; see log.");
+          });
+      });
+
+      $('#transferVotes').on('click', () => {
+          let address = $('#voteTransferAddress').val();
+          let electionId = $('#voteTransferElectionId').val();
+          self.transferVotes(address, electionId);
+      });
+
       self.refresh();
     });
   },
@@ -68,15 +116,19 @@ window.App = {
   refresh: function() {
     let self = this;
 
-    let value = web3.fromWei(web3.eth.getBalance(account), 'ether')
-    let balance_element = document.getElementById("balance");
-    balance_element.innerHTML = value.valueOf();
+    web3.eth.getBalance(account, function(error, result) {
+        if (!error) {
+            let balance_element = document.getElementById('balance');
+            balance_element.innerHTML = web3.fromWei(result, 'ether');
+        } else {
+            console.error('Couldn\'t get balance; see log.');
+        }
+    })
   },
 
-  addVoter: function() {
+  addVoter: function(voter) {
       var self = this;
 
-      var voter = document.getElementById('voter').value;
       this.setStatus("Initiating transaction... (please wait)");
 
       var ethd;
@@ -104,41 +156,37 @@ window.App = {
         self.setStatus("Transaction complete!");
       }).catch(function(e) {
         console.log(e);
-        self.setStatus("Error adding voter; see log.");
+        self.setStatus("Error deleting voter; see log.");
       });
   },
 
-  createElection: function() {
+  createElection: function(electionName) {
       let self = this;
 
-      let electionName = document.getElementById('electionName').value;
       this.setStatus("Initiating transaction... (please wait)");
 
       var ethd;
       EthDemocracy.deployed().then(function(instance) {
         ethd = instance;
-        return ethd.createElection(electionName, {from: account});
+        return ethd.createElection(electionName, {from: account, gas: 1000000});
       }).then(function() {
         self.setStatus("Transaction complete!");
         self.refresh();
       }).catch(function(e) {
         console.log(e);
-        self.setStatus("Error adding voter; see log.");
+        self.setStatus("Error creating election; see log.");
       });
   },
 
-  addVoteOption: function() {
+  addVoteOption: function(electionId, optionName) {
       let self = this;
-
-      let electionName = document.getElementById('electionNameOption');
-      let optionName = document.getElementById('optionName');
 
       this.setStatus("Initiating transaction... (please wait)");
 
       var ethd;
       EthDemocracy.deployed().then(function(instance) {
         ethd = instance;
-        return ethd.addVoteOption(electionName, optionName, {from: account});
+        return ethd.addVoteOption(electionId, optionName, {from: account});
       }).then(function() {
         self.setStatus("Transaction complete!");
         self.refresh();
@@ -146,7 +194,40 @@ window.App = {
         console.log(e);
         self.setStatus("Error adding vote option; see log.");
       });
+  },
 
+  vote: function(electionId, optionId) {
+      let self = this;
+      this.setStatus("Initiating transaction... (please wait)");
+
+      var ethd;
+      EthDemocracy.deployed().then(function(instance) {
+        ethd = instance;
+        return ethd.vote(electionId, optionId, {from: account});
+      }).then(function() {
+        self.setStatus("Transaction complete!");
+        self.refresh();
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error adding vote option; see log.");
+      });
+  },
+
+  transferVotes: function(address, electionId) {
+      let self = this;
+      this.setStatus("Initiating transaction... (please wait)");
+
+      var ethd;
+      EthDemocracy.deployed().then(function(instance) {
+        ethd = instance;
+        return ethd.transferVotes(electionId, address, {from: account});
+      }).then(function() {
+        self.setStatus("Transaction complete!");
+        self.refresh();
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error adding vote option; see log.");
+      });
   }
 
   // sendCoin: function() {

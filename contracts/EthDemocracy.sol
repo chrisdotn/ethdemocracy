@@ -1,25 +1,8 @@
 pragma solidity ^0.4.15;
 
-contract EthDemocracy {
+import "./AbstractEthDemocracy.sol";
 
-    struct Election {
-        uint id;
-        string name;
-        string[] options;
-        mapping (string => uint) votes;
-        mapping (address => uint) balance;
-    }
-
-    event Error(string _msg);
-    event VoterAdded(address _voter);
-    event VotersDeleted(string _msg);
-    event ElectionCreated(uint _electionId);
-    event VoteOptionAdded(uint _electionId, string _option);
-    event VoteCast(address _voter, uint _electionId, string _choice);
-    event VoteTransferred(address _from, address _to, uint _amount);
-
-    Election[] public elections;
-    address[] public voters;
+contract EthDemocracy is AbstractEthDemocracy {
 
     /**
      * Return the number of registered voters

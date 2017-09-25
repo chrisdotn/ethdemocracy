@@ -26,7 +26,7 @@ div {
 section {
     border: 1px dashed blue;
     padding: 1em;
-    margin: 1em;
+    margin: 0.1em;
     flex: 1 1 auto;
 }
 

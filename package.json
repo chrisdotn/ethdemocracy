@@ -6,7 +6,7 @@
     "lint": "eslint ./",
     "build": "webpack",
     "dev": "webpack-dev-server",
-    "test": "docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc && truffle test",
+    "test": "docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' && truffle test",
     "posttest": "docker stop testrpc"
   },
   "author": "Douglas von Kohorn",

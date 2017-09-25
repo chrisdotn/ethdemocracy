@@ -1,0 +1,77 @@
+body {
+  /*
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 10%;
+  */
+  font-family: "Open Sans", sans-serif;
+}
+
+div {
+    border: 1px solid black;
+    padding: 1em;
+    margin: 1em;
+}
+
+.controls {
+    display: flex;
+}
+
+.field {
+    border: none;
+    margin: 0;
+    padding: 0 0 1em 0;
+}
+
+section {
+    border: 1px dashed blue;
+    padding: 1em;
+    margin: 0.1em;
+    flex: 1 1 auto;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  /* width: 500px; */
+  padding: 5px;
+  font-size: 16px;
+}
+
+button {
+  font-size: 16px;
+  padding: 5px;
+}
+
+h1, h2 {
+  /* display: inline-block; */
+  /* vertical-align: middle;*/
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #AAA;
+  font-size: 32px;
+}
+
+h3 {
+  font-weight: normal;
+  color: #AAA;
+  font-size: 24px;
+}
+
+.black {
+  color: black;
+}
+
+#balance {
+  color: black;
+}
+
+.hint {
+  color: #666;
+}

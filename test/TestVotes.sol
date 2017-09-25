@@ -98,12 +98,14 @@ contract TestVotes {
         ethDemocracy.addVoteOption(electionId, 'Köln');
         ethDemocracy.addVoteOption(electionId, 'Mannheim');
 
+        uint optionId = ethDemocracy.getVoteOptionId(electionId, 'Hamburg');
+
         uint currentVotes = ethDemocracy.getResults(electionId, 'Hamburg');
         uint voteWeight = ethDemocracy.getVotes(electionId, address(this));
         uint expected = currentVotes + voteWeight;
         uint expectedVoteWeight = 0;
 
-        Assert.isTrue(ethDemocracy.castVote(electionId, 'Hamburg'), 'Function call should have succeded');
+        Assert.isTrue(ethDemocracy.castVote(electionId, optionId), 'Function call should have succeded');
         Assert.equal(ethDemocracy.getResults(electionId, 'Hamburg'), expected, 'There should be more votes than before');
         Assert.equal(ethDemocracy.getVotes(electionId, address(this)), expectedVoteWeight, 'There should be no votes left for this address');
     }
@@ -120,7 +122,9 @@ contract TestVotes {
         ethDemocracy.addVoteOption(electionId, 'Köln');
         ethDemocracy.addVoteOption(electionId, 'Mannheim');
 
-        ethDemocracy.castVote(electionId, 'Hamburg');
+        uint optionId = ethDemocracy.getVoteOptionId(electionId, 'Hamburg');
+
+        ethDemocracy.castVote(electionId, optionId);
 
         Assert.equal(ethDemocracy.getResults(electionId, 'Hamburg'), 1, 'There should be one vote for Hamburg');
         Assert.equal(ethDemocracy.getResults(electionId, 'Köln'), 0, 'There should be no vote for Köln');
@@ -140,10 +144,10 @@ contract TestVotes {
         uint currentVotesFrom = ethDemocracy.getVotes(electionId, address(this));
         uint currentVotesTo = ethDemocracy.getVotes(electionId, to);
 
-        ethDemocracy.transferVotes(electionId, currentVotesFrom, to);
-
         uint expectedVotesFrom = 0;
         uint expectedVotesTo = currentVotesFrom + currentVotesTo;
+
+        ethDemocracy.transferVotes(electionId, to);
 
         Assert.equal(ethDemocracy.getVotes(electionId, address(this)), expectedVotesFrom, 'There should be no votes left for sender');
         Assert.equal(ethDemocracy.getVotes(electionId, to), expectedVotesTo, 'There should be more votes for to');

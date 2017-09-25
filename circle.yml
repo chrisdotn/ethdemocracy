@@ -2,15 +2,15 @@ machine:
   services:
     - docker
   node:
-    version: 8.5.0
-  test:
-    override:
-      - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-      - docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place'
-      - truffle test
-    post:
-      - docker stop testrpc
-      - cp test-results.xml $CIRCLE_TEST_REPORTS/mocha/
+    version: 8.2.0
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/mocha
+    - docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place'
+    - truffle test
+  post:
+    - docker stop testrpc
+    - cp test-results.xml $CIRCLE_TEST_REPORTS/mocha/
 
-      # "test": "docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' && sleep 2 && truffle test",
-      #"posttest": "docker stop testrpc"
+    # "test": "docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' && sleep 2 && truffle test",
+    #"posttest": "docker stop testrpc"

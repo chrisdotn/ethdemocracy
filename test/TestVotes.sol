@@ -28,13 +28,6 @@ contract TestVotes {
         Assert.isTrue(ethDemocracy.isVoter(msg.sender), 'Message.sender should be a voter');
     }
 
-    function testNoElectionsInitially() {
-        EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
-
-        uint expected = 0;
-        Assert.equal(ethDemocracy.getElectionsLength(), expected, 'There should no election');
-    }
-
     function testCreateElection() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 

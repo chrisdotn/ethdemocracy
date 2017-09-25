@@ -38,7 +38,6 @@ contract TestVotes {
 
         uint expected = 1;
         Assert.isTrue(result, 'Result should have been true');
-        Assert.equal(ethDemocracy.getElectionsLength(), expected, 'There should be one election');
         Assert.equal(ethDemocracy.getVotes(electionId, msg.sender), expected, 'There should be one vote for the msg.sender');
         Assert.equal(ethDemocracy.getVotes(electionId, voters[1]), expected, 'There should be one vote for 0x7D4D...6dfB');
         Assert.equal(ethDemocracy.getVotes(electionId, voters[2]), expected, 'There should be one vote for 0xd36D...FD82');

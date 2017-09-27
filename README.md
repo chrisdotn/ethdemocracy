@@ -9,25 +9,27 @@ The project provides a stub for a smart contract that implements a simple _liqui
 ## Installation
 To use the project, clone the repository:
 ```sh
-git clone git://github.com/chrisdotn/ethdemocracy.git
+$ git clone git://github.com/chrisdotn/ethdemocracy.git
 ```
 or one of the supplied URLs by Github.
 
 Change into the directory and do a
 ```sh
-npm install
+$ npm install
 ```
 
 
 ## Usage
 To develop with the project make sure to have [testrpc](https://github.com/ethereumjs/testrpc) running.
 
-After all packages have installed you can use the [truffle](https://www.truffleframework.com) commands to interact with the project:
-- `truffle compile` will compile all smart contracts.
+After all packages have installed you can use the [truffle](http://truffleframework.com/) commands to interact with the project:
+- `truffle compile` will compile smart contracts that have been changed since the last compile.
+- `truffle compile --all` will compile all smart contracts.
 - `truffle migrate` will compile smart contracts and deploy them to the default network.
-- `truffle compile --network staging` will compile and deploy to network staging.
-- `truffle compile --reset` will compile and deploy all smart contract even if they haven't changed.
+- `truffle migrate --network staging` will compile and deploy to network staging.
+- `truffle migrate --reset` will compile and deploy all smart contract even if they haven't changed.
 - `truffle test` will run the tests in directory `$(PROJECT)/test`.
+- `truffle test ./path/to/test/file.sol` will run the test in the specified file.
 
 To interact with the frontend use:
 - `npm run build` build the frontend using webpack

@@ -5,16 +5,15 @@ import "./AbstractEthDemocracy.sol";
 contract EthDemocracy is AbstractEthDemocracy {
 
     /**
-     * Return the number of registered voters
+     * Get the number of registered voters
      */
     function getVotersLength() constant returns (uint) {
         return voters.length;
     }
 
-    function getElection(uint _id) constant returns (uint id, string name) {
-        return(elections[_id].id, elections[_id].name);
-    }
-
+    /**
+     * Get the election ID for a given name
+     */
     function getElectionId(string _electionName) constant returns (uint) {
         for (uint i=0; i<elections.length; i++) {
             if (sha3(_electionName) == sha3(elections[i].name)) {
@@ -44,6 +43,9 @@ contract EthDemocracy is AbstractEthDemocracy {
         return false;
     }
 
+    /**
+     * Get the name of a vote option for a given election ID and option ID
+     */
     function getVoteOption(uint _electionId, uint _optionId) constant returns (string) {
         require (_electionId < elections.length);
         require (_optionId < elections[_electionId].options.length);
@@ -51,6 +53,9 @@ contract EthDemocracy is AbstractEthDemocracy {
         return elections[_electionId].options[_optionId];
     }
 
+    /**
+     * Get the ID of a vote option for a given election and an option's name
+     */
     function getVoteOptionId(uint _electionId, string _option) constant returns (uint) {
         require(_electionId < elections.length);
         var hash = sha3(_option);

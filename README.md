@@ -11,7 +11,6 @@ To use the project, clone the repository:
 ```Shell
 $ git clone https://github.com/chrisdotn/ethdemocracy.git
 ```
-or one of the supplied URLs by Github.
 
 Change into the directory and do a
 ```Shell
@@ -30,6 +29,7 @@ After all packages have installed you can use the [truffle](http://truffleframew
 - `truffle migrate --reset` will compile and deploy all smart contract even if they haven't changed.
 - `truffle test` will run the tests in directory `$(PROJECT)/test`.
 - `truffle test ./path/to/test/file.sol` will run the test in the specified file.
+- `truffle console` will open a `web3`-enabled Javascript console for manual interaction with the contracts.
 
 To interact with the frontend use:
 - `npm run build` build the frontend using webpack

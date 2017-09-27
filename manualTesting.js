@@ -25,3 +25,6 @@ ethd.getVoteOptionId(0, 'red').then(function (result) { console.log(result); })
 EthDemocracy.deployed().then(function(instance) { return .createElection('Test1'); });
 
 EthDemocracy.deployed().then(function(instance) { return instance.getElectionLength(); }).then(function(value) { console.log(value); });
+
+var allEventsEventsEver = ethd.allEvents({fromBlock: 0, toBlock: 'latest'}, function(error, log){ if (!error) console.log(log); });
+var newEvents = ethd.allEvents(function(error, log){ if (!error) console.log(log); });

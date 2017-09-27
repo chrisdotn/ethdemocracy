@@ -1,38 +1,14 @@
 pragma solidity ^0.4.15;
 
-contract EthDemocracy {
+import "./AbstractEthDemocracy.sol";
 
-    struct Election {
-        uint id;
-        string name;
-        string[] options;
-        mapping (string => uint) votes;
-        mapping (address => uint) balance;
-    }
-
-    event Error(string _msg);
-    event VoterAdded(address _voter);
-    event VotersDeleted(string _msg);
-    event ElectionCreated(uint _electionId);
-    event VoteOptionAdded(uint _electionId, string _option);
-    event VoteCast(address _voter, uint _electionId, string _choice);
-    event VoteTransferred(address _from, address _to, uint _amount);
-
-    Election[] public elections;
-    address[] public voters;
+contract EthDemocracy is AbstractEthDemocracy {
 
     /**
      * Return the number of registered voters
      */
     function getVotersLength() constant returns (uint) {
         return voters.length;
-    }
-
-    /**
-      * Get the number of elections
-      */
-    function getElectionsLength() constant returns (uint) {
-        return elections.length;
     }
 
     function getElection(uint _id) constant returns (uint id, string name) {
@@ -45,13 +21,14 @@ contract EthDemocracy {
                 return i;
             }
         }
-        return 0;
+        revert();
     }
 
     /**
      * Get the name of an election
      */
     function getElectionName(uint _electionId) constant returns (string) {
+        require(_electionId < elections.length);
         return elections[_electionId].name;
     }
 
@@ -68,6 +45,9 @@ contract EthDemocracy {
     }
 
     function getVoteOption(uint _electionId, uint _optionId) constant returns (string) {
+        require (_electionId < elections.length);
+        require (_optionId < elections[_electionId].options.length);
+
         return elections[_electionId].options[_optionId];
     }
 
@@ -87,6 +67,7 @@ contract EthDemocracy {
      * Get number of choices for a given election
      */
     function getVoteOptions(uint _electionId) constant returns (uint) {
+        require(_electionId < elections.length);
         return elections[_electionId].options.length;
     }
 
@@ -94,6 +75,7 @@ contract EthDemocracy {
      * Get the number of votes that an address can still cast for a given election
      */
     function getVotes(uint _electionId, address _voter) constant returns (uint) {
+        require(_electionId < elections.length);
         return elections[_electionId].balance[_voter];
     }
 
@@ -101,6 +83,7 @@ contract EthDemocracy {
      * Get the number of votes for a particular choice in a particular election
      */
     function getResults(uint _electionId, string _option) constant returns (uint) {
+        require(_electionId < elections.length);
         return elections[_electionId].votes[_option];
     }
 
@@ -144,6 +127,7 @@ contract EthDemocracy {
      * Add a single choice to an election. W/o calling this at least twice, the election is meaningless.
      */
     function addVoteOption(uint _electionId, string _option) returns (bool) {
+        require(_electionId < elections.length);
         bytes32 sha3Option = sha3(_option);
 
         for(uint i=0; i<elections[_electionId].options.length; i++) {
@@ -160,34 +144,9 @@ contract EthDemocracy {
      * Vote with all available tokens for a choice
      */
     function castVote(uint _electionId, uint _optionId) returns (bool) {
-        if (_electionId >= elections.length) {
-            Error('Errornous election ID');
-            return false;
-        }
-
-        if (_optionId >= elections[_electionId].options.length) {
-            Error('Errornous option ID');
-            return false;
-        }
-
-        // votes not cast?
-        if (getVotes(_electionId, msg.sender) <= 0) {
-            Error('No vote left for msg.sender');
-            return false;
-        }
-
-        /*bool validChoice = false;
-        bytes32 sha3Choice = sha3(_choice);
-        for (uint i=0; i<elections[_electionId].options.length; i++) {
-            if (sha3(elections[_electionId].options[i]) == sha3Choice) {
-                validChoice = true;
-            }
-        }
-
-        if (!validChoice) {
-            Error('Invalid choice');
-            return false;
-        }*/
+        require (_electionId < elections.length);
+        require (_optionId < elections[_electionId].options.length);
+        require (getVotes(_electionId, msg.sender) > 0);
 
         uint voteWeight = elections[_electionId].balance[msg.sender];
         string memory choice = elections[_electionId].options[_optionId];

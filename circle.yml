@@ -11,6 +11,3 @@ test:
   post:
     - docker stop testrpc
     - cp test-results.xml $CIRCLE_TEST_REPORTS/mocha/
-
-    # "test": "docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' && sleep 2 && truffle test",
-    #"posttest": "docker stop testrpc"

@@ -10,6 +10,7 @@
  - [Truffle](http://truffleframework.com/): Smart Contract Framework
  - [Stringutils](https://github.com/Arachnid/solidity-stringutils): String utilities for Solidity
  - [EthPM](https://www.ethpm.com/): Ethereum Package Manager
+ - [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_Standard): ERC20-Token-Standard
 
 ## Documentation
  - [Solidity](http://solidity.readthedocs.io/en/develop/index.html): Latest Solidity documentation

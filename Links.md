@@ -13,7 +13,8 @@
 
 ## Documentation
  - [Solidity](http://solidity.readthedocs.io/en/develop/index.html): Latest Solidity documentation
- - [Web3 Javascript API](https://github.com/ethereum/wiki/wiki/JavaScript-API)
+ - [Web3 Javascript-API v0.x.x](https://github.com/ethereum/wiki/wiki/JavaScript-API)
+ - [Web3 JavaScript-API v1.x.x](https://web3js.readthedocs.io/en/1.0/index.html)
 
 ## Tools
  - [Metamask](https://metamask.io/): Chrome Plugin to access the Ethereum blockchain

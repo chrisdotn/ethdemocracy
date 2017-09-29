@@ -19,3 +19,9 @@
 
 ## Tools
  - [Metamask](https://metamask.io/): Chrome Plugin to access the Ethereum blockchain
+
+## CI/CD
+ - [Industrializing smart contracts with Truffle](https://www.ekino.com/industrializing-smart-contracts-with-truffle/): CI mit GitLab
+
+## Allgemein
+ - [How I Snatched 153,037 ETH After A Bad Tinder Date](https://medium.com/@rtaylor30/how-i-snatched-your-153-037-eth-after-a-bad-tinder-date-d1d84422a50b): Wie hätte man den Parity-Bug ausnutzen können?

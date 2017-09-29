@@ -6,8 +6,8 @@ module.exports = {
             network_id: "*" // Match any network id
         }
     }
-    //,
-    //mocha: {
-    //    reporter: 'mocha-junit-reporter'
-    //}
+    ,
+    mocha: {
+       reporter: 'mocha-junit-reporter'
+    }
 };

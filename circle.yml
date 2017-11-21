@@ -6,7 +6,7 @@ machine:
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place'
+    - docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place' --gasLimit 4000000
     - truffle test
   post:
     - docker stop testrpc

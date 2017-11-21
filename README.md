@@ -11,7 +11,7 @@ The project provides a stub for a smart contract that implements a simple _liqui
 ## Installation
 To use the project, first clone the repository:
 ```Shell
-$ git clone https://github.com/chrisdotn/ethdemocracy.git
+$ git clone https://github.com/MaibornWolff/ethdemocracy.git
 ```
 
 Then change into the directory and do a

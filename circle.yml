@@ -8,6 +8,6 @@ test:
     - ./testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place':
         background: true
     - sleep 1
-    - ./truffle test
+    - ./truffle test --reporter 'mocha-junit-reporter'
   post:
     - cp test-results.xml $CIRCLE_TEST_REPORTS/mocha/

@@ -12,10 +12,15 @@ module.exports = {
             runs: 200,
         }
     },
-    // Uncomment this if you want XML test reports, leave as is for console output
-    /*
     mocha: {
-       reporter: 'mocha-junit-reporter'
     }
-    */
 };
+
+// Pass reporter as argument to truffle
+// To run tests with junit output: truffle test 'mocha-junit-reporter'
+let reporterArg = process.argv.indexOf('--reporter')
+if (reporterArg >= 0) {
+  module.exports['mocha'] = {
+    reporter: process.argv[reporterArg + 1]
+  }
+}

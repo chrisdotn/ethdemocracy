@@ -1,13 +1,13 @@
 machine:
-  services:
-    - docker
   node:
     version: 8.2.0
 test:
   override:
+    - ./truffle version
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - docker run -d -p 8545:8545 --name testrpc wbuchwalter/testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place'
-    - truffle test
+    - ./testrpc -m 'scene kite dust inherit sample upset person below fancy drive mean place':
+        background: true
+    - sleep 1
+    - ./truffle test --reporter 'mocha-junit-reporter'
   post:
-    - docker stop testrpc
     - cp test-results.xml $CIRCLE_TEST_REPORTS/mocha/

@@ -1,16 +1,23 @@
 {
-    "name": "truffle-init-webpack",
-    "version": "0.0.2",
-    "description": "Frontend example using truffle v3",
+    "name": "EthDemocracy",
+    "version": "0.0.3",
+    "description": "Smart contract development on the example of liquid democracy",
     "scripts": {
         "lint": "eslint ./",
+        "install": "ln -sf ./node_modules/.bin/truffle ./truffle && ln -sf ./node_modules/.bin/testrpc ./testrpc",
         "build": "webpack",
         "dev": "webpack-dev-server"
     },
+    "homepage": "https://github.com/MaibornWolff/ethdemocracy",
     "author": "Christoph Niemann",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MaibornWolff/ethdemocracy.git"
+    },
     "dependencies": {
-        "truffle": "^3.4.9",
+        "ethereumjs-testrpc": "^6.0.3",
+        "truffle": "^4.0.0",
         "web3": "^0.18.4"
     },
     "devDependencies": {

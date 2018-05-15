@@ -1,3 +1,7 @@
 build/
 node_modules/
 test-results.xml
+
+package-lock.json
+truffle
+testrpc

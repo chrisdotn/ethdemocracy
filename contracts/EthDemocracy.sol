@@ -127,17 +127,7 @@ contract EthDemocracy is AbstractEthDemocracy {
      * Vote with all available tokens for a choice
      */
     function castVote(uint _electionId, uint _optionId) public returns (bool) {
-        require (_electionId < elections.length);
-        require (_optionId < elections[_electionId].options.length);
-        require (getVotes(_electionId, msg.sender) > 0);
-
-        uint voteWeight = elections[_electionId].balance[msg.sender];
-        string memory choice = elections[_electionId].options[_optionId];
-        elections[_electionId].balance[msg.sender] = 0;
-        elections[_electionId].votes[choice] += voteWeight;
-        VoteCast(msg.sender, _electionId, choice);
-
-        return true;
+       // TODO
     }
 
     /**

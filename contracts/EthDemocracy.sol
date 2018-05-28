@@ -170,7 +170,7 @@ contract EthDemocracy is AbstractEthDemocracy {
         require(_electionId < elections.length);
         require(isVoter(_to));
 
-        var amount = getVotes(_electionId, msg.sender);
+        uint amount = getVotes(_electionId, msg.sender);
 
         elections[_electionId].balance[msg.sender] -= amount;
         elections[_electionId].balance[_to] += amount;

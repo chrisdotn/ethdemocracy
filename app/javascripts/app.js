@@ -19,14 +19,14 @@ var account;
 
 window.App = {
 
-    start: function() {
+    start: function () {
         var self = this;
 
         // Bootstrap the EthDemocracy abstraction for Use.
         EthDemocracy.setProvider(web3.currentProvider);
 
         // Get the initial account balance so it can be displayed.
-        web3.eth.getAccounts(function(err, accs) {
+        web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
                 alert("There was an error fetching your accounts.");
                 return;
@@ -68,20 +68,20 @@ window.App = {
                 self.setStatus("Initiating transaction... (please wait)");
 
                 var ethd;
-                EthDemocracy.deployed().then(function(instance) {
+                EthDemocracy.deployed().then(function (instance) {
                     ethd = instance;
                     return ethd.getVoteOptionId(electionId, optionName, {
                         from: account
                     });
-                }).then(function(optionId) {
+                }).then(function (optionId) {
                     console.log('OptionID: ' + optionId);
                     return ethd.castVote(electionId, optionId, {
                         from: account
                     });
-                }).then(function() {
+                }).then(function () {
                     self.setStatus("Transaction complete!");
                     self.refresh();
-                }).catch(function(e) {
+                }).catch(function (e) {
                     console.log(e);
                     self.setStatus("Error adding voter; see log.");
                 });
@@ -93,19 +93,25 @@ window.App = {
                 self.transferVotes(address, electionId);
             });
 
+            $('#getResults').on('click', () => {
+                let electionId = $('#electionIdResult').val();
+                let optionId = $('#optionNameResult').val();
+                self.getResults(electionId, optionId);
+            });
+
             self.refresh();
         });
     },
 
-    setStatus: function(message) {
+    setStatus: function (message) {
         var status = document.getElementById("status");
         status.innerHTML = message;
     },
 
-    refresh: function() {
+    refresh: function () {
         let self = this;
 
-        web3.eth.getBalance(account, function(error, result) {
+        web3.eth.getBalance(account, function (error, result) {
             if (!error) {
                 let balance_element = document.getElementById('balance');
                 balance_element.innerHTML = web3.fromWei(result, 'ether');
@@ -115,126 +121,145 @@ window.App = {
         })
     },
 
-    addVoter: function(voter) {
+    addVoter: function (voter) {
         var self = this;
 
         this.setStatus("Initiating transaction... (please wait)");
 
         var ethd;
-        EthDemocracy.deployed().then(function(instance) {
+        EthDemocracy.deployed().then(function (instance) {
             ethd = instance;
             return ethd.addVoter(voter, {
                 from: account
             });
-        }).then(function() {
+        }).then(function () {
             self.setStatus("Transaction complete!");
             self.refresh();
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.log(e);
             self.setStatus("Error adding voter; see log.");
         });
     },
 
-    deleteVoters: function() {
+    deleteVoters: function () {
         var self = this;
         this.setStatus("Initiating transaction... (please wait)");
 
         var ethd;
-        EthDemocracy.deployed().then(function(instance) {
+        EthDemocracy.deployed().then(function (instance) {
             ethd = instance;
             return ethd.deleteVoters({
                 from: account
             });
-        }).then(function() {
+        }).then(function () {
             self.setStatus("Transaction complete!");
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.log(e);
             self.setStatus("Error deleting voter; see log.");
         });
     },
 
-    createElection: function(electionName) {
+    createElection: function (electionName) {
         let self = this;
 
         this.setStatus("Initiating transaction... (please wait)");
 
         var ethd;
-        EthDemocracy.deployed().then(function(instance) {
+        EthDemocracy.deployed().then(function (instance) {
             ethd = instance;
             return ethd.createElection(electionName, {
                 from: account,
                 gas: 1000000
             });
-        }).then(function() {
+        }).then(function () {
             self.setStatus("Transaction complete!");
             self.refresh();
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.log(e);
             self.setStatus("Error creating election; see log.");
         });
     },
 
-    addVoteOption: function(electionId, optionName) {
+    addVoteOption: function (electionId, optionName) {
         let self = this;
 
         this.setStatus("Initiating transaction... (please wait)");
 
         var ethd;
-        EthDemocracy.deployed().then(function(instance) {
+        EthDemocracy.deployed().then(function (instance) {
             ethd = instance;
             return ethd.addVoteOption(electionId, optionName, {
                 from: account
             });
-        }).then(function() {
+        }).then(function () {
             self.setStatus("Transaction complete!");
             self.refresh();
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.log(e);
             self.setStatus("Error adding vote option; see log.");
         });
     },
 
-    vote: function(electionId, optionId) {
+    vote: function (electionId, optionId) {
         let self = this;
         this.setStatus("Initiating transaction... (please wait)");
 
         var ethd;
-        EthDemocracy.deployed().then(function(instance) {
+        EthDemocracy.deployed().then(function (instance) {
             ethd = instance;
             return ethd.vote(electionId, optionId, {
                 from: account
             });
-        }).then(function() {
+        }).then(function () {
             self.setStatus("Transaction complete!");
             self.refresh();
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.log(e);
             self.setStatus("Error adding vote option; see log.");
         });
     },
 
-    transferVotes: function(address, electionId) {
+    transferVotes: function (address, electionId) {
         let self = this;
         this.setStatus("Initiating transaction... (please wait)");
 
         var ethd;
-        EthDemocracy.deployed().then(function(instance) {
+        EthDemocracy.deployed().then(function (instance) {
             ethd = instance;
             return ethd.transferVotes(electionId, address, {
                 from: account
             });
-        }).then(function() {
+        }).then(function () {
             self.setStatus("Transaction complete!");
             self.refresh();
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.log(e);
             self.setStatus("Error adding vote option; see log.");
+        });
+    },
+
+    getResults: function (electionId, optionId) {
+        let self = this;
+        this.setStatus("Getting Results... (please wait)");
+
+        var ethd;
+        EthDemocracy.deployed().then(function (instance) {
+            ethd = instance;
+            return ethd.getResults.call(electionId, optionId, {
+                from: account
+            });
+        }).then(function (data) {
+            self.setStatus("Votes: " + data.toNumber());
+            self.refresh();
+        }).catch(function (e) {
+            console.log(e);
+            self.setStatus("Error getting Results; see log.");
         });
     }
 
 };
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
         console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 EthDemocracy, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-ethdmask")

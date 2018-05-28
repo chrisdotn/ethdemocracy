@@ -11,7 +11,10 @@
 <body>
     <div class="masthead">
         <h1>EthDemocracy</h1>
-        <h3>You have <span class="black"><span id="balance"></span> &Xi;</span></h3>
+        <h3>You have
+            <span class="black">
+                <span id="balance"></span> &Xi;</span>
+        </h3>
     </div>
 
     <div class="controls">
@@ -48,6 +51,17 @@
                 <input type="text" id="optionName" placeholder="e.g. yellow, red"></input>
             </div>
             <button id='addVoteOption'>Add Option</button>
+
+            <h3>Get Results</h3>
+            <div class="field">
+                <label for="electionIdOption">Election</label>
+                <input type="text" id="electionIdResult" placeholder="e.g. 1"></input>
+            </div>
+            <div class="field">
+                <label for="optionName">Option</label>
+                <input type="text" id="optionNameResult" placeholder="e.g. yellow, red"></input>
+            </div>
+            <button id='getResults'>Get Results</button>
         </section>
 
         <section>
@@ -82,7 +96,8 @@
         <h2>Status</h2>
         <p id="status">&nbsp;</p>
 
-        <p class="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</p>
+        <p class="hint">
+            <strong>Hint:</strong> open the browser developer console to view any errors and warnings.</p>
     </div class="footer">
 </body>
 

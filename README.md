@@ -21,17 +21,17 @@ $ npm install
 to install all needed dependencies and binaries.
 
 ## Usage
-To develop with the project make sure to have [testrpc](https://github.com/ethereumjs/testrpc) running. It is installed by default and can be started by executing ``./testrpc``.
+To develop with the project make sure to have [ganache-cli](https://github.com/trufflesuite/ganache-cli) running. It is installed by default and can be started by executing ``npm run ganache``.
 
 After all packages have installed you can use the [truffle](http://truffleframework.com/) commands to interact with the project:
-- `./truffle compile` will compile smart contracts that have been changed since the last compile.
-- `./truffle compile --all` will compile all smart contracts.
-- `./truffle migrate` will compile smart contracts and deploy them to the default network.
-- `./truffle migrate --network staging` will compile and deploy to network staging.
-- `./truffle migrate --reset` will compile and deploy all smart contract even if they haven't changed.
-- `./truffle test` will run the tests in directory `$(PROJECT)/test`.
-- `./truffle test ./path/to/test/file.sol` will run the test in the specified file.
-- `./truffle console` will open a `web3`-enabled Javascript console for manual interaction with the contracts.
+- `npm run compile` will compile smart contracts that have been changed since the last compile.
+- `npm run compile --all` will compile all smart contracts.
+- `npm run migrate` will compile smart contracts and deploy them to the default network.
+- `npm run migrate --network staging` will compile and deploy to network staging.
+- `npm run migrate --reset` will compile and deploy all smart contract even if they haven't changed.
+- `npm run test` will run the tests in directory `$(PROJECT)/test`.
+- `npm run test ./path/to/test/file.sol` will run the test in the specified file.
+- `npm run console` will open a `web3`-enabled Javascript console for manual interaction with the contracts.
 
 To interact with the frontend run the following commands in a different console tab:
 - `npm run build` build the frontend using webpack

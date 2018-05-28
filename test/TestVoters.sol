@@ -22,15 +22,15 @@ contract TestVoters {
     EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
     uint expected = 0;
-    Assert.equal(ethDemocracy.getVotersLength(), expected, 'There should be no voters initially');
+    Assert.equal(ethDemocracy.getVotersLength(), expected, "There should be no voters initially");
   }
 
   function testAddVoter() {
       EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
       uint expectedLength = ethDemocracy.getVotersLength() + 1;
-      Assert.isTrue(ethDemocracy.addVoter(voters[1]), 'Voter should have been added');
-      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, 'Length should have been increased');
+      Assert.isTrue(ethDemocracy.addVoter(voters[1]), "Voter should have been added");
+      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, "Length should have been increased");
   }
 
   function testDeleteVoter() {
@@ -38,8 +38,8 @@ contract TestVoters {
 
       uint expectedLength = 0;
       ethDemocracy.addVoter(voters[1]);
-      Assert.isTrue(ethDemocracy.deleteVoters(), 'Should have returned true');
-      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, 'Voters should be empty');
+      Assert.isTrue(ethDemocracy.deleteVoters(), "Should have returned true");
+      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, "Voters should be empty");
   }
 
   function testAddExistingVoter() {
@@ -48,8 +48,8 @@ contract TestVoters {
       ethDemocracy.addVoter(voters[1]);
 
       uint expectedLength = ethDemocracy.getVotersLength();
-      Assert.isFalse(ethDemocracy.addVoter(voters[1]), 'Voter should not have been added');
-      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, 'Length should have stayed the same');
+      Assert.isFalse(ethDemocracy.addVoter(voters[1]), "Voter should not have been added");
+      Assert.equal(ethDemocracy.getVotersLength(), expectedLength, "Length should have stayed the same");
   }
 
   function testAddVoters() {
@@ -60,7 +60,7 @@ contract TestVoters {
       ethDemocracy.addVoter(voters[3]);
 
       uint expected = 3;
-      Assert.equal(ethDemocracy.getVotersLength(), expected, 'There should be 3 registered voters');
+      Assert.equal(ethDemocracy.getVotersLength(), expected, "There should be 3 registered voters");
   }
 
 }

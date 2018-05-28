@@ -13,6 +13,7 @@ module.exports = {
       { from: './app/index.html', to: "index.html" }
     ])
   ],
+  performance: { hints: false },
   module: {
     rules: [
       {

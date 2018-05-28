@@ -1,4 +1,4 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.24;
 
 import "./AbstractEthDemocracy.sol";
 
@@ -15,12 +15,13 @@ contract EthDemocracy is AbstractEthDemocracy {
      * Get the election ID for a given name
      */
     function getElectionId(string _electionName) public constant returns (uint) {
-        for (uint i=0; i<elections.length; i++) {
-            if (keccak256(_electionName) == keccak256(elections[i].name)) {
+        for (uint i = 0; i<elections.length; i++) {
+            if (keccak256(abi.encodePacked(_electionName)) == keccak256(abi.encodePacked(elections[i].name))) {
                 return i;
             }
         }
-        revert();
+
+        revert("Election not found");
     }
 
     /**
@@ -35,11 +36,12 @@ contract EthDemocracy is AbstractEthDemocracy {
      * Test if an address is a registered voter
      */
     function isVoter(address _voter) public constant returns (bool) {
-        for (uint i=0; i<voters.length; i++) {
+        for (uint i = 0; i<voters.length; i++) {
             if (_voter == voters[i]) {
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -58,14 +60,14 @@ contract EthDemocracy is AbstractEthDemocracy {
      */
     function getVoteOptionId(uint _electionId, string _option) public constant returns (uint) {
         require(_electionId < elections.length);
-        var hash = keccak256(_option);
-        for (uint i=0; i<elections[_electionId].options.length; i++) {
-            if (hash == keccak256(elections[_electionId].options[i])) {
+        bytes32 hash = keccak256(abi.encodePacked(_option));
+        for (uint i = 0 ; i<elections[_electionId].options.length ; i++) {
+            if (hash == keccak256(abi.encodePacked(elections[_electionId].options[i]))) {
                 return i;
             }
         }
-        revert();
-        //revert('Not a valid option');
+        
+        revert("Not a valid option");
     }
 
     /**
@@ -104,7 +106,7 @@ contract EthDemocracy is AbstractEthDemocracy {
      */
     function deleteVoters() public returns (bool) {
         voters.length = 0;
-        VotersDeleted('All voters have been deleted');
+        emit VotersDeleted("All voters have been deleted");
         return true;
     }
 
@@ -112,7 +114,7 @@ contract EthDemocracy is AbstractEthDemocracy {
      * Create a new election and distribute one vote to each registered voter. After calling this, the
      * choices still have to be set via `addVoteOption()`
      */
-    function createElection(string _name) public returns (bool success, uint electionId) {
+    function createElection(string _name) public returns (uint electionId) {
         // TODO
     }
 

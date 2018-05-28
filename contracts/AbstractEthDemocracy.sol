@@ -55,7 +55,7 @@ contract AbstractEthDemocracy {
     function deleteVoters() public returns (bool);
 
     /* Create a new election with the given name */
-    function createElection(string _name) public returns (bool success, uint electionId);
+    function createElection(string _name) public returns (uint electionId);
 
     /* Add an option to an existing election */
     function addVoteOption(uint _electionId, string _option) public returns (bool);

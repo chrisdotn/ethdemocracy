@@ -25,99 +25,94 @@ contract TestVotes {
     function testMsgSenderInVoters() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-        Assert.isTrue(ethDemocracy.isVoter(msg.sender), 'Message.sender should be a voter');
+        Assert.isTrue(ethDemocracy.isVoter(msg.sender), "Message.sender should be a voter");
     }
 
     function testCreateElection() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-        bool result;
         uint electionId;
 
-        (result, electionId) = ethDemocracy.createElection('Test-Election 1');
+        electionId = ethDemocracy.createElection("Test-Election 1");
 
         uint expected = 1;
-        Assert.isTrue(result, 'Result should have been true');
-        Assert.equal(ethDemocracy.getVotes(electionId, msg.sender), expected, 'There should be one vote for the msg.sender');
-        Assert.equal(ethDemocracy.getVotes(electionId, voters[1]), expected, 'There should be one vote for 0x7D4D...6dfB');
-        Assert.equal(ethDemocracy.getVotes(electionId, voters[2]), expected, 'There should be one vote for 0xd36D...FD82');
-        Assert.equal(ethDemocracy.getVotes(electionId, voters[3]), expected, 'There should be one vote for 0x9B93...26Af');
+        Assert.equal(ethDemocracy.getVotes(electionId, msg.sender), expected, "There should be one vote for the msg.sender");
+        Assert.equal(ethDemocracy.getVotes(electionId, voters[1]), expected, "There should be one vote for 0x7D4D...6dfB");
+        Assert.equal(ethDemocracy.getVotes(electionId, voters[2]), expected, "There should be one vote for 0xd36D...FD82");
+        Assert.equal(ethDemocracy.getVotes(electionId, voters[3]), expected, "There should be one vote for 0x9B93...26Af");
     }
 
     function testCreateElectionOptions() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-        bool result;
         uint electionId;
 
-        (result, electionId) = ethDemocracy.createElection('Test-Election 2');
+        electionId = ethDemocracy.createElection("Test-Election 2");
 
-        ethDemocracy.addVoteOption(electionId, 'A');
-        ethDemocracy.addVoteOption(electionId, 'B');
-        ethDemocracy.addVoteOption(electionId, 'C');
+        ethDemocracy.addVoteOption(electionId, "A");
+        ethDemocracy.addVoteOption(electionId, "B");
+        ethDemocracy.addVoteOption(electionId, "C");
 
         uint expected = 3;
-        Assert.equal(ethDemocracy.getVoteOptions(electionId), expected, 'There should be three options');
+        Assert.equal(ethDemocracy.getVoteOptions(electionId), expected, "There should be three options");
     }
 
     function testExistingVoteWeight() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
         uint expected = 1;
-        Assert.equal(ethDemocracy.getVotes(0, voters[1]), expected, 'There should be one vote for 0x7D4D...6dfb');
-        Assert.equal(ethDemocracy.getVotes(0, msg.sender), expected, 'There should be one vote for the msg.sender');
+        Assert.equal(ethDemocracy.getVotes(0, voters[1]), expected, "There should be one vote for 0x7D4D...6dfb");
+        Assert.equal(ethDemocracy.getVotes(0, msg.sender), expected, "There should be one vote for the msg.sender");
     }
 
     function testNonExistingVoteWeight() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
         uint expected = 0;
-        Assert.equal(ethDemocracy.getVotes(0, voters[5]), expected, 'There should be no vote');
+        Assert.equal(ethDemocracy.getVotes(0, voters[5]), expected, "There should be no vote");
     }
 
     function testCastVote() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-        bool result;
         uint electionId;
 
-        (result, electionId) = ethDemocracy.createElection('Neue Bürostadt');
+        electionId = ethDemocracy.createElection("Neue Bürostadt");
 
-        ethDemocracy.addVoteOption(electionId, 'Hamburg');
-        ethDemocracy.addVoteOption(electionId, 'Köln');
-        ethDemocracy.addVoteOption(electionId, 'Mannheim');
+        ethDemocracy.addVoteOption(electionId, "Hamburg");
+        ethDemocracy.addVoteOption(electionId, "Köln");
+        ethDemocracy.addVoteOption(electionId, "Mannheim");
 
-        uint optionId = ethDemocracy.getVoteOptionId(electionId, 'Hamburg');
+        uint optionId = ethDemocracy.getVoteOptionId(electionId, "Hamburg");
 
-        uint currentVotes = ethDemocracy.getResults(electionId, 'Hamburg');
+        uint currentVotes = ethDemocracy.getResults(electionId, "Hamburg");
         uint voteWeight = ethDemocracy.getVotes(electionId, address(this));
         uint expected = currentVotes + voteWeight;
         uint expectedVoteWeight = 0;
 
-        Assert.isTrue(ethDemocracy.castVote(electionId, optionId), 'Function call should have succeded');
-        Assert.equal(ethDemocracy.getResults(electionId, 'Hamburg'), expected, 'There should be more votes than before');
-        Assert.equal(ethDemocracy.getVotes(electionId, address(this)), expectedVoteWeight, 'There should be no votes left for this address');
+        Assert.isTrue(ethDemocracy.castVote(electionId, optionId), "Function call should have succeded");
+        Assert.equal(ethDemocracy.getResults(electionId, "Hamburg"), expected, "There should be more votes than before");
+        Assert.equal(ethDemocracy.getVotes(electionId, address(this)), expectedVoteWeight, "There should be no votes left for this address");
     }
 
     function testGetResults() {
         EthDemocracy ethDemocracy = EthDemocracy(DeployedAddresses.EthDemocracy());
 
-        bool result;
         uint electionId;
 
-        (result, electionId) = ethDemocracy.createElection('Neue Bürostadt');
+        electionId = ethDemocracy.createElection("Neue Bürostadt");
 
-        ethDemocracy.addVoteOption(electionId, 'Hamburg');
-        ethDemocracy.addVoteOption(electionId, 'Köln');
-        ethDemocracy.addVoteOption(electionId, 'Mannheim');
+        ethDemocracy.addVoteOption(electionId, "Hamburg");
+        ethDemocracy.addVoteOption(electionId, "Köln");
+        ethDemocracy.addVoteOption(electionId, "Mannheim");
 
-        uint optionId = ethDemocracy.getVoteOptionId(electionId, 'Hamburg');
+        uint optionId = ethDemocracy.getVoteOptionId(electionId, "Hamburg");
 
         ethDemocracy.castVote(electionId, optionId);
 
-        Assert.equal(ethDemocracy.getResults(electionId, 'Hamburg'), 1, 'There should be one vote for Hamburg');
-        Assert.equal(ethDemocracy.getResults(electionId, 'Köln'), 0, 'There should be no vote for Köln');
-        Assert.equal(ethDemocracy.getResults(electionId, 'Mannheim'), 0, 'There should be no vote for Mannheim');
+        Assert.equal(ethDemocracy.getResults(electionId, "Hamburg"), 1, "There should be one vote for Hamburg");
+        Assert.equal(ethDemocracy.getResults(electionId, "Köln"), 0, "There should be no vote for Köln");
+        Assert.equal(ethDemocracy.getResults(electionId, "Mannheim"), 0, "There should be no vote for Mannheim");
     }
 
     function testTransferVotes() {
@@ -125,10 +120,9 @@ contract TestVotes {
 
         address to = voters[2];
 
-        bool result;
         uint electionId;
 
-        (result, electionId) = ethDemocracy.createElection('Test-Election 3');
+        electionId = ethDemocracy.createElection("Test-Election 3");
 
         uint currentVotesFrom = ethDemocracy.getVotes(electionId, address(this));
         uint currentVotesTo = ethDemocracy.getVotes(electionId, to);
@@ -138,8 +132,8 @@ contract TestVotes {
 
         ethDemocracy.transferVotes(electionId, to);
 
-        Assert.equal(ethDemocracy.getVotes(electionId, address(this)), expectedVotesFrom, 'There should be no votes left for sender');
-        Assert.equal(ethDemocracy.getVotes(electionId, to), expectedVotesTo, 'There should be more votes for to');
+        Assert.equal(ethDemocracy.getVotes(electionId, address(this)), expectedVotesFrom, "There should be no votes left for sender");
+        Assert.equal(ethDemocracy.getVotes(electionId, to), expectedVotesTo, "There should be more votes for to");
     }
 
 }

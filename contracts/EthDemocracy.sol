@@ -98,7 +98,11 @@ contract EthDemocracy is AbstractEthDemocracy {
      * Add an address to the registered voters list
      */
     function addVoter(address _voter) public returns (bool) {
-        // TODO
+        if(isVoter(_voter)) {
+            revert("User is already Voter");
+        }
+        voters.push(_voter);
+        return true;
     }
 
     /**
@@ -115,28 +119,62 @@ contract EthDemocracy is AbstractEthDemocracy {
      * choices still have to be set via `addVoteOption()`
      */
     function createElection(string _name) public returns (uint electionId) {
-        // TODO
+        string[] memory emptyOptions;
+        electionId = elections.length;
+
+        elections.push(Election(electionId, _name, emptyOptions));
+        for (uint i=0; i<voters.length; i++) {
+            elections[elections.length-1].balance[voters[i]] = 1;
+        }
+        emit ElectionCreated(elections.length - 1);
     }
 
     /**
      * Add a single choice to an election. W/o calling this at least twice, the election is meaningless.
      */
     function addVoteOption(uint _electionId, string _option) public returns (bool) {
-        // TODO
+        require(_electionId < elections.length);
+        bytes32 sha3Option = keccak256(abi.encodePacked(_option));
+
+        for(uint i=0; i<elections[_electionId].options.length; i++) {
+            if (keccak256(abi.encodePacked(elections[_electionId].options[i])) == sha3Option) {
+                return false;
+            }
+        }
+        elections[_electionId].options.push(_option);
+        emit VoteOptionAdded(_electionId, _option);
+        return true;
     }
 
     /**
      * Vote with all available tokens for a choice
      */
     function castVote(uint _electionId, uint _optionId) public returns (bool) {
-       // TODO
+        require (_electionId < elections.length);
+        require (_optionId < elections[_electionId].options.length);
+        require (getVotes(_electionId, msg.sender) > 0);
+
+        uint voteWeight = elections[_electionId].balance[msg.sender];
+        string memory choice = elections[_electionId].options[_optionId];
+        elections[_electionId].balance[msg.sender] = 0;
+        elections[_electionId].votes[choice] += voteWeight;
+        emit VoteCast(msg.sender, _electionId, choice);
+
+        return true;
     }
 
     /**
      * Transfer your votes to another address. The address must be a registered voter
      */
     function transferVotes(uint _electionId, address _to) public returns (bool) {
-        // TODO
-    }
+        require(_electionId < elections.length);
+        require(isVoter(_to));
 
+        var amount = getVotes(_electionId, msg.sender);
+
+        elections[_electionId].balance[msg.sender] -= amount;
+        elections[_electionId].balance[_to] += amount;
+        emit VoteTransferred(msg.sender, _to, amount);
+        return true;
+    }
 }

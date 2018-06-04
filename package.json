@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "truffle-contract": "^3.0.5",
-        "web3": "^0.18.4"
+        "web3": "^0.20.6"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -46,8 +46,8 @@
         "mocha-junit-reporter": "^1.17.0",
         "style-loader": "^0.13.2",
         "truffle": "^4.1.11",
-        "webpack": "^4.9.1",
-        "webpack-cli": "^2.1.4",
+        "webpack": "^4.10.2",
+        "webpack-cli": "^2.1.5",
         "webpack-dev-server": "^3.1.4"
     }
 }

@@ -13,15 +13,13 @@ module.exports = {
       { from: './app/index.html', to: "index.html" }
     ])
   ],
+  performance: { hints: false },
   module: {
     rules: [
       {
-       test: /\.css$/,
-       use: [ 'style-loader', 'css-loader' ]
-      }
-    ],
-    loaders: [
-      { test: /\.json$/, use: 'json-loader' },
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,

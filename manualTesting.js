@@ -9,7 +9,7 @@ var ethd;
 EthDemocracy.deployed().then(function(instance) { ethd = instance; });
 
 ethd.addVoter(0x617a638B22c1F9FDE234C148289Cf8516c9F47FF).then(function(result) { console.log(result); }).catch(function(e) { console.error(e);});
-ethd.getVotersLength().then(function(res) { console.log(res.valueOf(); });
+ethd.getVotersLength().then(function(res) { console.log(res.valueOf()); });
 ethd.deleteVoters().then(function(res) { console.log(res.valueOf()); });
 
 ethd.doStuff1().then(function(res) { console.log(res); });
@@ -27,7 +27,7 @@ ethd.getVoteOption(0, 0).then(function (result) { console.log(result); })
 ethd.getVoteOptionId(0, 'red').then(function (result) { console.log(result); })
 
 
-EthDemocracy.deployed().then(function(instance) { return .createElection('Test1'); });
+EthDemocracy.deployed().then(function(instance) { return instance.createElection('Test1'); });
 
 EthDemocracy.deployed().then(function(instance) { return instance.getElectionLength(); }).then(function(value) { console.log(value); });
 

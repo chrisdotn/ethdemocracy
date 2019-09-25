@@ -8,6 +8,7 @@ module.exports = {
     }
     ,
     mocha: {
-       reporter: 'mocha-junit-reporter'
+       //reporter: 'mocha-junit-reporter'
+       reporter: 'spec'
     }
 };

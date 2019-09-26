@@ -35,6 +35,7 @@
         "json-loader": "^0.5.7",
         "mocha": "^6.2.0",
         "mocha-junit-reporter": "^1.13.0",
+        "solidity-coverage": "^0.6.7",
         "style-loader": "^0.13.2",
         "truffle-contract": "^1.1.11",
         "webpack": "^2.7.0",
